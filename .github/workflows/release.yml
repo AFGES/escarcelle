@@ -66,7 +66,7 @@ jobs:
           mkdir -p pages-staging
           cp -a repo/. pages-staging/
           if [ -n "$GPG_KEY_ID" ]; then
-            GPG_PUBLIC_KEY=$(gpg --export --armor "$GPG_KEY_ID" | base64 -w0)
+            GPG_PUBLIC_KEY=$(gpg --export "$GPG_KEY_ID" | base64 -w0)
             sed "s|^GPGKey=.*|GPGKey=$GPG_PUBLIC_KEY|" net.escarcelle.Cashdesk.flatpakrepo > pages-staging/net.escarcelle.Cashdesk.flatpakrepo
           else
             cp net.escarcelle.Cashdesk.flatpakrepo pages-staging/
