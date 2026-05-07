@@ -1,0 +1,11 @@
+[Flatpak Ref]
+Title=Escarcelle
+Name=net.escarcelle.Cashdesk
+Branch=master
+Url=https://afges.github.io/escarcelle/
+RuntimeRepo=https://dl.flathub.org/repo/flathub.flatpakrepo
+IsRuntime=false
+Comment=Escarcelle – Social grocery store management application
+Homepage=https://escarcelle.net
+Icon=https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.png
+GPGKey=

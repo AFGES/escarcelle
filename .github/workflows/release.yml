@@ -68,8 +68,10 @@ jobs:
           if [ -n "$GPG_KEY_ID" ]; then
             GPG_PUBLIC_KEY=$(gpg --export "$GPG_KEY_ID" | base64 -w0)
             sed "s|^GPGKey=.*|GPGKey=$GPG_PUBLIC_KEY|" net.escarcelle.Cashdesk.flatpakrepo > pages-staging/net.escarcelle.Cashdesk.flatpakrepo
+            sed "s|^GPGKey=.*|GPGKey=$GPG_PUBLIC_KEY|" net.escarcelle.Cashdesk.flatpakref > pages-staging/net.escarcelle.Cashdesk.flatpakref
           else
             cp net.escarcelle.Cashdesk.flatpakrepo pages-staging/
+            cp net.escarcelle.Cashdesk.flatpakref pages-staging/
           fi
           cp net.escarcelle.Cashdesk.png pages-staging/
 

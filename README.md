@@ -10,20 +10,28 @@
 
 Ce dépôt contient le packaging Flatpak non officiel d'Escarcelle, maintenu par l'[AFGES](https://afges.org).
 
-### Installation via le dépôt Flatpak (recommandé)
+### Installation via Flatpakref (recommandé)
+
+Ouvrez le fichier [`.flatpakref`](https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakref) depuis GNOME Logiciels ou Discover, ou via la commande :
 
 ```bash
-flatpak remote-add --if-not-exists escarcelle https://afges.github.io/escarcelle/
-flatpak install escarcelle net.escarcelle.Cashdesk
+flatpak install https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakref
 ```
 
-Les mises à jour sont ensuite reçues automatiquement via :
+Cela ajoute automatiquement le dépôt et installe l'application en une seule étape. Les mises à jour sont ensuite reçues automatiquement via :
 
 ```bash
 flatpak update
 ```
 
-Vous pouvez aussi utiliser le fichier [`.flatpakrepo`](net.escarcelle.Cashdesk.flatpakrepo) directement depuis GNOME Logiciels ou Discover.
+### Installation via le dépôt Flatpak (méthode alternative)
+
+Ajoutez d'abord le dépôt avec le fichier [`.flatpakrepo`](https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakrepo) depuis GNOME Logiciels ou Discover, ou via :
+
+```bash
+flatpak remote-add --if-not-exists escarcelle https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakrepo
+flatpak install escarcelle net.escarcelle.Cashdesk
+```
 
 ### Installation via bundle (méthode alternative)
 
@@ -53,20 +61,28 @@ make clean      # Supprime les artefacts de build
 
 This repository contains the unofficial Flatpak packaging for Escarcelle, maintained by [AFGES](https://afges.org).
 
-### Install via the Flatpak repository (recommended)
+### Install via Flatpakref (recommended)
+
+Open the [`.flatpakref`](https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakref) file from GNOME Software or Discover, or run:
 
 ```bash
-flatpak remote-add --if-not-exists escarcelle https://afges.github.io/escarcelle/
-flatpak install escarcelle net.escarcelle.Cashdesk
+flatpak install https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakref
 ```
 
-Updates are then received automatically via:
+This adds the repository and installs the application in one step. Updates are then received automatically via:
 
 ```bash
 flatpak update
 ```
 
-You can also use the [`.flatpakrepo`](net.escarcelle.Cashdesk.flatpakrepo) file directly from GNOME Software or Discover.
+### Install via the Flatpak repository (alternative)
+
+Add the repository first using the [`.flatpakrepo`](https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakrepo) file from GNOME Software or Discover, or run:
+
+```bash
+flatpak remote-add --if-not-exists escarcelle https://afges.github.io/escarcelle/net.escarcelle.Cashdesk.flatpakrepo
+flatpak install escarcelle net.escarcelle.Cashdesk
+```
 
 ### Install via bundle (alternative)
 
