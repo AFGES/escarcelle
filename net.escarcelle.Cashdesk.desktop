@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Escarcelle
+Name[fr]=Escarcelle
+Comment=Gestion d'épicerie sociale et solidaire
+Comment[en]=Social grocery store management
+Exec=EscarcelleLinux
+Type=Application
+Icon=net.escarcelle.Cashdesk
+Categories=Office;Finance;
+StartupNotify=true
+Terminal=false

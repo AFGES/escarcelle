@@ -1,0 +1,33 @@
+id: net.escarcelle.Cashdesk
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: EscarcelleLinux
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --device=dri
+  - --share=network
+  - --socket=pulseaudio
+  - --persist=.
+
+modules:
+  - name: escarcelle
+    buildsystem: simple
+    sources:
+      - type: file
+        url: https://escarcelle.net/public/cashdesk/EscarcelleLinux
+        sha256: fdc3a67bb5f688f35ff5e8a849bb23e410cca631ab15a4f32f21744032892435
+        dest-filename: EscarcelleLinux
+      - type: file
+        path: net.escarcelle.Cashdesk.desktop
+      - type: file
+        path: net.escarcelle.Cashdesk.metainfo.xml
+      - type: file
+        path: net.escarcelle.Cashdesk.png
+    build-commands:
+      - install -Dm755 EscarcelleLinux /app/bin/EscarcelleLinux
+      - install -Dm644 net.escarcelle.Cashdesk.desktop /app/share/applications/net.escarcelle.Cashdesk.desktop
+      - install -Dm644 net.escarcelle.Cashdesk.metainfo.xml /app/share/metainfo/net.escarcelle.Cashdesk.metainfo.xml
+      - install -Dm644 net.escarcelle.Cashdesk.png /app/share/icons/hicolor/256x256/apps/net.escarcelle.Cashdesk.png

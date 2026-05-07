@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.escarcelle.Cashdesk</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+
+  <name>Escarcelle</name>
+  <name xml:lang="fr">Escarcelle</name>
+  <summary>Social grocery store management</summary>
+  <summary xml:lang="fr">Gestion d'épicerie sociale et solidaire</summary>
+
+  <description>
+    <p>
+      Escarcelle is a management application for social and solidarity grocery stores,
+      developed by Softinnov in partnership with ANDES. It tracks products from inventory
+      entry to final beneficiary, manages pricing, beneficiary budgets, supplier orders,
+      and generates statistics.
+    </p>
+    <p xml:lang="fr">
+      Escarcelle est un logiciel de gestion pour les épiceries sociales et solidaires,
+      développé par Softinnov en partenariat avec l'ANDES. Il suit les produits de
+      l'entrée en stock jusqu'au bénéficiaire final, gère les tarifications, les budgets
+      des bénéficiaires, les commandes fournisseurs et produit des statistiques.
+    </p>
+  </description>
+
+  <url type="homepage">https://escarcelle.net</url>
+
+  <releases>
+    <release version="4.15.1" date="2026-03-20"/>
+  </releases>
+
+  <content_rating type="oars-1.1"/>
+</component>
