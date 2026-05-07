@@ -11,8 +11,8 @@ install:
 run:
 	flatpak run $(FLATPAK_ID)
 
-bundle: build
-	flatpak build-update-repo repo
+bundle:
+	flatpak-builder --force-clean --repo=repo build-dir $(FLATPAK_ID).yaml
 	flatpak build-bundle repo $(FLATPAK_ID).flatpak $(FLATPAK_ID)
 
 clean:

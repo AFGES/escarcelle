@@ -1,8 +1,8 @@
 id: net.escarcelle.Cashdesk
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
-command: EscarcelleLinux
+command: escarcelle
 
 finish-args:
   - --share=ipc
@@ -26,8 +26,11 @@ modules:
         path: net.escarcelle.Cashdesk.metainfo.xml
       - type: file
         path: net.escarcelle.Cashdesk.png
+      - type: file
+        path: escarcelle-wrapper.sh
     build-commands:
       - install -Dm755 EscarcelleLinux /app/bin/EscarcelleLinux
+      - install -Dm755 escarcelle-wrapper.sh /app/bin/escarcelle
       - install -Dm644 net.escarcelle.Cashdesk.desktop /app/share/applications/net.escarcelle.Cashdesk.desktop
       - install -Dm644 net.escarcelle.Cashdesk.metainfo.xml /app/share/metainfo/net.escarcelle.Cashdesk.metainfo.xml
       - install -Dm644 net.escarcelle.Cashdesk.png /app/share/icons/hicolor/256x256/apps/net.escarcelle.Cashdesk.png
