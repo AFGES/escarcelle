@@ -30,6 +30,8 @@ jobs:
           bundle: net.escarcelle.Cashdesk.flatpak
           manifest-path: net.escarcelle.Cashdesk.yaml
           cache-key: flatpak-builder-${{ github.sha }}
+          gpg-sign: ${{ secrets.FLATPAK_GPG_KEY_ID }}
+          gpg-keys: ${{ secrets.FLATPAK_GPG_PRIVATE_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -39,7 +41,12 @@ jobs:
           retention-days: 30
 
       - name: Prune OSTree repo
-        run: flatpak build-update-repo --prune --prune-depth=1 repo
+        env:
+          GPG_KEY_ID: ${{ secrets.FLATPAK_GPG_KEY_ID }}
+        run: |
+          SIGN_ARGS=""
+          [ -n "$GPG_KEY_ID" ] && SIGN_ARGS="--gpg-sign=$GPG_KEY_ID"
+          flatpak build-update-repo --prune --prune-depth=1 $SIGN_ARGS repo
 
       - name: Prepare Pages content
         run: |
