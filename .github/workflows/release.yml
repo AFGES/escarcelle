@@ -7,6 +7,11 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   flatpak:
     name: Build Flatpak
@@ -33,6 +38,21 @@ jobs:
           path: net.escarcelle.Cashdesk.flatpak
           retention-days: 30
 
+      - name: Prune OSTree repo
+        run: flatpak build-update-repo --prune --prune-depth=1 repo
+
+      - name: Prepare Pages content
+        run: |
+          mkdir -p pages-staging
+          cp -a repo/. pages-staging/
+          cp net.escarcelle.Cashdesk.flatpakrepo pages-staging/
+          cp net.escarcelle.Cashdesk.png pages-staging/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages-staging
+
       - name: Create or update latest rolling release
         if: github.ref == 'refs/heads/main'
         uses: ncipollo/release-action@v1
@@ -53,3 +73,15 @@ jobs:
           artifacts: net.escarcelle.Cashdesk.flatpak
           generateReleaseNotes: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: flatpak
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
