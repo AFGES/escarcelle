@@ -30,7 +30,8 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.FLATPAK_GPG_PRIVATE_KEY }}
         run: |
           if [ -n "$GPG_PRIVATE_KEY" ]; then
-            FINGERPRINT=$(echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --import --with-colons 2>/dev/null | awk -F: '$1=="fpr"{print $10; exit}')
+            FINGERPRINT=$(echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --import-options show-only --import --with-colons 2>/dev/null | awk -F: '$1=="fpr"{print $10; exit}')
+            echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --import 2>/dev/null
             echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
           fi
 
@@ -50,13 +51,13 @@ jobs:
           path: net.escarcelle.Cashdesk.flatpak
           retention-days: 30
 
-      - name: Prune OSTree repo
+      - name: Prune and sign OSTree repo
         env:
           GPG_KEY_ID: ${{ steps.gpg.outputs.fingerprint }}
         run: |
           SIGN_ARGS=""
           [ -n "$GPG_KEY_ID" ] && SIGN_ARGS="--gpg-sign=$GPG_KEY_ID"
-          flatpak build-update-repo --prune --prune-depth=1 $SIGN_ARGS repo
+          flatpak build-update-repo --prune --prune-depth=1 --generate-static-deltas $SIGN_ARGS repo
 
       - name: Prepare Pages content
         run: |
