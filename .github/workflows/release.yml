@@ -60,10 +60,17 @@ jobs:
           flatpak build-update-repo --prune --prune-depth=1 --generate-static-deltas $SIGN_ARGS repo
 
       - name: Prepare Pages content
+        env:
+          GPG_KEY_ID: ${{ steps.gpg.outputs.fingerprint }}
         run: |
           mkdir -p pages-staging
           cp -a repo/. pages-staging/
-          cp net.escarcelle.Cashdesk.flatpakrepo pages-staging/
+          if [ -n "$GPG_KEY_ID" ]; then
+            GPG_PUBLIC_KEY=$(gpg --export --armor "$GPG_KEY_ID" | base64 -w0)
+            sed "s|^GPGKey=.*|GPGKey=$GPG_PUBLIC_KEY|" net.escarcelle.Cashdesk.flatpakrepo > pages-staging/net.escarcelle.Cashdesk.flatpakrepo
+          else
+            cp net.escarcelle.Cashdesk.flatpakrepo pages-staging/
+          fi
           cp net.escarcelle.Cashdesk.png pages-staging/
 
       - name: Upload Pages artifact
