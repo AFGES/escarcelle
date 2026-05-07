@@ -24,13 +24,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Import GPG key
+        id: gpg
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.FLATPAK_GPG_PRIVATE_KEY }}
+        run: |
+          if [ -n "$GPG_PRIVATE_KEY" ]; then
+            FINGERPRINT=$(echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --import --with-colons 2>/dev/null | awk -F: '$1=="fpr"{print $10; exit}')
+            echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build Flatpak bundle
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: net.escarcelle.Cashdesk.flatpak
           manifest-path: net.escarcelle.Cashdesk.yaml
           cache-key: flatpak-builder-${{ github.sha }}
-          gpg-sign: ${{ secrets.FLATPAK_GPG_KEY_ID }}
+          gpg-sign: ${{ steps.gpg.outputs.fingerprint }}
           gpg-keys: ${{ secrets.FLATPAK_GPG_PRIVATE_KEY }}
 
       - name: Upload artifact
@@ -42,7 +52,7 @@ jobs:
 
       - name: Prune OSTree repo
         env:
-          GPG_KEY_ID: ${{ secrets.FLATPAK_GPG_KEY_ID }}
+          GPG_KEY_ID: ${{ steps.gpg.outputs.fingerprint }}
         run: |
           SIGN_ARGS=""
           [ -n "$GPG_KEY_ID" ] && SIGN_ARGS="--gpg-sign=$GPG_KEY_ID"
