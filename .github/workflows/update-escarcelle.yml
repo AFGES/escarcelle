@@ -1,0 +1,50 @@
+name: Update Escarcelle SHA256
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Check and update SHA256
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download binary and compute SHA256
+        id: hash
+        run: |
+          curl -fsSL -o EscarcelleLinux https://escarcelle.net/public/cashdesk/EscarcelleLinux
+          echo "new=$(sha256sum EscarcelleLinux | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+
+      - name: Read current SHA256
+        id: current
+        run: |
+          echo "value=$(grep -oP 'sha256: \K\S+' net.escarcelle.Cashdesk.yaml)" >> "$GITHUB_OUTPUT"
+
+      - name: Update manifest
+        if: steps.hash.outputs.new != steps.current.outputs.value
+        run: |
+          sed -i "s/sha256: ${{ steps.current.outputs.value }}/sha256: ${{ steps.hash.outputs.new }}/" net.escarcelle.Cashdesk.yaml
+
+      - name: Open pull request
+        if: steps.hash.outputs.new != steps.current.outputs.value
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "fix: update EscarcelleLinux sha256"
+          branch: update/escarcelle-sha256
+          title: "fix: update EscarcelleLinux sha256"
+          body: |
+            The SHA256 hash of the upstream `EscarcelleLinux` binary has changed.
+
+            | | Hash |
+            |---|---|
+            | Old | `${{ steps.current.outputs.value }}` |
+            | New | `${{ steps.hash.outputs.new }}` |
