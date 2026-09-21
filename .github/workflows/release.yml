@@ -45,7 +45,7 @@ jobs:
           gpg-keys: ${{ secrets.FLATPAK_GPG_PRIVATE_KEY }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: net.escarcelle.Cashdesk.flatpak
           path: net.escarcelle.Cashdesk.flatpak
