@@ -35,7 +35,7 @@ jobs:
 
       - name: Open pull request
         if: steps.hash.outputs.new != steps.current.outputs.value
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "fix: update EscarcelleLinux sha256"
