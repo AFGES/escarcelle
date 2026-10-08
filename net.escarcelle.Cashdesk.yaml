@@ -18,7 +18,7 @@ modules:
     sources:
       - type: file
         url: https://escarcelle.net/public/cashdesk/EscarcelleLinux
-        sha256: fdc3a67bb5f688f35ff5e8a849bb23e410cca631ab15a4f32f21744032892435
+        sha256: 89f51b1e9c3eec49c22eeb0be65980882784b33d1d956e3ed0a08befa10e53b4
         dest-filename: EscarcelleLinux
       - type: file
         path: net.escarcelle.Cashdesk.desktop

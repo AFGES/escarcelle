@@ -23,6 +23,14 @@ jobs:
           curl -fsSL -o EscarcelleLinux https://escarcelle.net/public/cashdesk/EscarcelleLinux
           echo "new=$(sha256sum EscarcelleLinux | awk '{print $1}')" >> "$GITHUB_OUTPUT"
 
+      - name: Extract version from binary
+        id: version
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y upx-ucl
+          upx -d -o EscarcelleLinux.unpacked EscarcelleLinux
+          python3 scripts/extract-version.py EscarcelleLinux.unpacked >> "$GITHUB_OUTPUT"
+
       - name: Read current SHA256
         id: current
         run: |
@@ -32,6 +40,7 @@ jobs:
         if: steps.hash.outputs.new != steps.current.outputs.value
         run: |
           sed -i "s/sha256: ${{ steps.current.outputs.value }}/sha256: ${{ steps.hash.outputs.new }}/" net.escarcelle.Cashdesk.yaml
+          sed -i 's|<release version="[^"]*" date="[^"]*"/>|<release version="${{ steps.version.outputs.VERSION }}" date="${{ steps.version.outputs.DATE }}"/>|' net.escarcelle.Cashdesk.metainfo.xml
 
       - name: Open pull request
         if: steps.hash.outputs.new != steps.current.outputs.value
@@ -39,11 +48,16 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sign-commits: true
-          commit-message: "fix: update EscarcelleLinux sha256"
+          add-paths: |
+            net.escarcelle.Cashdesk.yaml
+            net.escarcelle.Cashdesk.metainfo.xml
+          commit-message: "fix: update EscarcelleLinux to ${{ steps.version.outputs.VERSION }}"
           branch: update/escarcelle-sha256
-          title: "fix: update EscarcelleLinux sha256"
+          title: "fix: update EscarcelleLinux to ${{ steps.version.outputs.VERSION }}"
           body: |
-            The SHA256 hash of the upstream `EscarcelleLinux` binary has changed.
+            The upstream `EscarcelleLinux` binary has changed.
+
+            Version: `${{ steps.version.outputs.VERSION }}` (built ${{ steps.version.outputs.DATE }})
 
             | | Hash |
             |---|---|

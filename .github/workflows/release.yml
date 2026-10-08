@@ -24,6 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read version from metainfo
+        id: meta
+        run: |
+          echo "version=$(grep -oP '<release version="\K[^"]+' net.escarcelle.Cashdesk.metainfo.xml | head -1)" >> "$GITHUB_OUTPUT"
+
       - name: Import GPG key
         id: gpg
         env:
@@ -91,6 +96,18 @@ jobs:
           removeArtifacts: true
           artifacts: net.escarcelle.Cashdesk.flatpak
           prerelease: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release for new upstream version
+        if: github.ref == 'refs/heads/main' && steps.meta.outputs.version != ''
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.meta.outputs.version }}
+          commit: ${{ github.sha }}
+          name: Escarcelle ${{ steps.meta.outputs.version }}
+          artifacts: net.escarcelle.Cashdesk.flatpak
+          generateReleaseNotes: true
+          skipIfReleaseExists: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create versioned release
