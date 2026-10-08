@@ -38,6 +38,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          sign-commits: true
           commit-message: "fix: update EscarcelleLinux sha256"
           branch: update/escarcelle-sha256
           title: "fix: update EscarcelleLinux sha256"
