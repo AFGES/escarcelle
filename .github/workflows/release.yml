@@ -85,19 +85,6 @@ jobs:
         with:
           path: pages-staging
 
-      - name: Create or update latest rolling release
-        if: github.ref == 'refs/heads/main'
-        uses: ncipollo/release-action@v1
-        with:
-          tag: latest
-          name: Latest Build
-          body: Automated rolling build from the `main` branch.
-          allowUpdates: true
-          removeArtifacts: true
-          artifacts: net.escarcelle.Cashdesk.flatpak
-          prerelease: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create release for new upstream version
         if: github.ref == 'refs/heads/main' && steps.meta.outputs.version != ''
         uses: ncipollo/release-action@v1
